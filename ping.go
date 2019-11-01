@@ -72,8 +72,16 @@ var (
 )
 
 // NewPinger returns a new Pinger struct pointer
-func NewPinger(addr string) (*Pinger, error) {
-	ipaddr, err := net.ResolveIPAddr("ip", addr)
+func NewPinger(params ...string) (*Pinger, error) {
+	// to keep backward API compatibility second param is optional
+	addr := params[0]
+	resolveProtocol := "ip"
+
+	if (len(params) > 1) {
+		resolveProtocol = params[1]
+	}
+
+	ipaddr, err := net.ResolveIPAddr(resolveProtocol, addr)
 	if err != nil {
 		return nil, err
 	}

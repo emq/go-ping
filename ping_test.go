@@ -245,6 +245,16 @@ func TestNewPingerValid(t *testing.T) {
 	AssertNoError(t, err)
 	AssertTrue(t, isIPv6(p.IPAddr().IP))
 
+	// Test forcing ipv6 protocol
+	p, err = NewPinger("www.google.com", "ip6")
+	AssertNoError(t, err)
+	AssertTrue(t, isIPv6(p.IPAddr().IP))
+
+	// Test forcing ipv4 protocol
+	p, err = NewPinger("www.google.com", "ip4")
+	AssertNoError(t, err)
+	AssertTrue(t, isIPv4(p.IPAddr().IP))
+
 	p, err = NewPinger("localhost")
 	AssertNoError(t, err)
 	AssertEqualStrings(t, "localhost", p.Addr())
